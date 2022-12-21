@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const morgan = require('morgan');
 
 // Route files
 const bootcamps = require('./routes/bootcamps.js')
@@ -9,16 +10,14 @@ dotenv.config({ path: './config/config.env' });
 
 const app = express();
 
-// Mount routers --> If we recieve this path, direct to linked file
-app.use('/api/v1/bootcamps', bootcamps);
-
-const logger = (req, res, next) => {
-    req.hello = "Hello World 2";
-    console.log('Middleware has run run run');
-    next();
+// Dev logging middleware --> Only want it to run if we are in the development environment
+if(process.env.NODE_ENV === 'development'){
+    app.use(morgan('dev'));
 }
 
-app.use(logger);
+
+// Mount routers --> If we recieve this path, direct to linked file
+app.use('/api/v1/bootcamps', bootcamps);
 
 
 const PORT = process.env.PORT || 5000;
