@@ -16,6 +16,9 @@ const bootcamps = require('./routes/bootcamps.js')
 
 const app = express();
 
+// Body parser --> So we can log req.body and such to the console 
+app.use(express.json());
+
 // Dev logging middleware --> Only want it to run if we are in the development environment
 if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'));
@@ -32,7 +35,7 @@ const server = app.listen(PORT, console.log(`Server running in ${process.env.NOD
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection',(err, promise)=>{
-    console.log(`Unhandled Rejection (Error): ${err.message}.red`);
+    console.log(`Unhandled Rejection (Error): ${err.message}`.red);
 
     // Close server and exit process with failure (1)
     server.close(()=>process.exit(1));
